@@ -1,0 +1,26 @@
+# ROS 2 workspace build, install, and log directories
+/build/
+install/
+log/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+CMakeLists.txt.user
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# VS Code files
+.vscode/
+
+# JetBrains IDEs files
+.idea/
+
+# ROS 2 specific
+*.swp
+*.swo
