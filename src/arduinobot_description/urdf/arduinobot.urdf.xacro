@@ -29,6 +29,24 @@
         </visual>
     </link>
 
+    <link name="forward_drive_arm">
+        <visual>
+            <origin rpy="0 -${PI/2} ${PI/2}"  xyz="0.19 0.06 -0.08" />
+            <geometry>
+                <mesh filename="package://arduinobot_description/meshes/forward_drive_arm.STL" scale="0.01 0.01 0.01" />
+            </geometry>
+        </visual>
+    </link>
+
+    <link name="horizontal_arm">
+        <visual>
+            <origin rpy="${PI/2} 0 ${PI/2}"  xyz="-0.03 -0.4 -0.06" />
+            <geometry>
+                <mesh filename="package://arduinobot_description/meshes/horizontal_arm.STL" scale="0.01 0.01 0.01" />
+            </geometry>
+        </visual>
+    </link>
+
     <!-- JOINTS STATE -->
     <!-- We linked two links - world with base link  -->
     <joint name="virtual_joint" type="fixed">
@@ -43,6 +61,22 @@
         <child link="base_plate" />
         <axis xyz="0 0 1" />
         <origin rpy="0 0 0" xyz="0 0 0.307" />
+        <limit lower="-${PI/2}" upper="${PI/2}" effort="${effort}" velocity="${velocity}" />
+    </joint>
+
+    <joint name="joint_2" type="revolute">
+        <parent link="base_plate" />
+        <child link="forward_drive_arm" />
+        <axis xyz="1 0 0" />
+        <origin rpy="0 0 0" xyz="-0.2 0 0.35" />
+        <limit lower="-${PI/2}" upper="${PI/2}" effort="${effort}" velocity="${velocity}" />
+    </joint>
+
+    <joint name="joint_3" type="revolute">
+        <parent link="forward_drive_arm" />
+        <child link="horizontal_arm" />
+        <axis xyz="1 0 0" />
+        <origin rpy="0 0 0" xyz="0 0 0.8" />
         <limit lower="-${PI/2}" upper="${PI/2}" effort="${effort}" velocity="${velocity}" />
     </joint>
 </robot>
