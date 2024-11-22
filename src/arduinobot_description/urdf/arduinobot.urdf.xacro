@@ -47,6 +47,33 @@
         </visual>
     </link>
 
+    <link name="claw_support">
+        <visual>
+            <origin rpy="0 0 ${PI/2}"  xyz="0 -0.06 -0.15" />
+            <geometry>
+                <mesh filename="package://arduinobot_description/meshes/claw_support.STL" scale="0.01 0.01 0.01" />
+            </geometry>
+        </visual>
+    </link>
+
+    <link name="gripper_right">
+        <visual>
+            <origin rpy="0 0 -${PI/2}"  xyz="-0.107 0.4744 -0.1" />
+            <geometry>
+                <mesh filename="package://arduinobot_description/meshes/right_finger.STL" scale="0.01 0.01 0.01" />
+            </geometry>
+        </visual>
+    </link>
+
+    <link name="gripper_left">
+        <visual>
+            <origin rpy="0 0 -${PI/2}"  xyz="-0.039 0.4744 -0.1" />
+            <geometry>
+                <mesh filename="package://arduinobot_description/meshes/left_finger.STL" scale="0.01 0.01 0.01" />
+            </geometry>
+        </visual>
+    </link>
+
     <!-- JOINTS STATE -->
     <!-- We linked two links - world with base link  -->
     <joint name="virtual_joint" type="fixed">
@@ -79,4 +106,28 @@
         <origin rpy="0 0 0" xyz="0 0.02 0.793" />
         <limit lower="-${PI/2}" upper="${PI/2}" effort="${effort}" velocity="${velocity}" />
     </joint>
+
+    <joint name="horizontal_arm_to_claw_support" type="fixed">
+        <parent link="horizontal_arm" />
+        <child link="claw_support" />
+        <origin rpy="0 0 0" xyz="0 0.80 0" />
+    </joint>
+
+    <joint name="joint_4" type="revolute">
+        <parent link="claw_support" />
+        <child link="gripper_right" />
+        <axis xyz="0 0 1" />
+        <origin rpy="0 0 0" xyz="-0.035 0.147 -0.1" />
+        <limit lower="-${PI/2}" upper="0.0" effort="${effort}" velocity="${velocity}" />
+    </joint>
+
+    <joint name="joint_5" type="revolute">
+        <parent link="claw_support" />
+        <child link="gripper_left" />
+        <axis xyz="0 0 1" />
+        <origin rpy="0 0 0" xyz="-0.215 0.147 -0.1" />
+        <mimic joint="joint_4" multiplier="-1" />
+        <limit lower="0.0" upper="${PI/2}" effort="${effort}" velocity="${velocity}" />
+    </joint>
+
 </robot>
