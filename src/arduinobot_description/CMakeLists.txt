@@ -9,7 +9,7 @@ find_package(ament_cmake REQUIRED)
 
 # Ros2 should recognize those directory with meshes and urdf by calling install operator below
 install(
-  DIRECTORY meshes urdf
+  DIRECTORY meshes urdf launch rviz
   DESTINATION share/${PROJECT_NAME}
 )
 
