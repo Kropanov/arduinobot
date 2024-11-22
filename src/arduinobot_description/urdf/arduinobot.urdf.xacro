@@ -40,7 +40,7 @@
 
     <link name="horizontal_arm">
         <visual>
-            <origin rpy="${PI/2} 0 ${PI/2}"  xyz="-0.03 -0.42 -0.081" />
+            <origin rpy="${PI/2} 0 ${PI/2}"  xyz="-0.03 -0.425 -0.073" />
             <geometry>
                 <mesh filename="package://arduinobot_description/meshes/horizontal_arm.STL" scale="0.01 0.01 0.01" />
             </geometry>
@@ -76,7 +76,7 @@
         <parent link="forward_drive_arm" />
         <child link="horizontal_arm" />
         <axis xyz="1 0 0" />
-        <origin rpy="0 0 0" xyz="0 0 0.8" />
+        <origin rpy="0 0 0" xyz="0 0.008 0.793" />
         <limit lower="-${PI/2}" upper="${PI/2}" effort="${effort}" velocity="${velocity}" />
     </joint>
 </robot>
