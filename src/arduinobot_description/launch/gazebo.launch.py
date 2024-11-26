@@ -18,6 +18,15 @@ def generate_launch_description():
         description="Absolute path to the robot URDF file"
     )
 
+    robot_description = ParameterValue(Command(["xacro ", LaunchConfiguration("model")]))
+
+    robot_state_publisher = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="screen",
+        parameters=[{"robot_description": robot_description, "use_sim_time": True}]
+    )
+
     gazebo_resource_path = SetEnvironmentVariable(
         name="GZ_SIM_RESOURCE_PATH",
         value=[
@@ -27,13 +36,6 @@ def generate_launch_description():
 
     ros_distro = os.environ["ROS_DISTRO"]
     physics_engine = "" if ros_distro == "humble" else "--physics-engine gz-physics-bullet-featherstone-plugin"
-    robot_description = ParameterValue(Command(["xacro ", LaunchConfiguration("model")]))
-
-    robot_state_publisher = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        parameters=[{"robot_description": robot_description, "use_sim_time": True}]
-    )
 
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
@@ -62,20 +64,11 @@ def generate_launch_description():
         ]
     )
 
-    rviz_node = Node(
-        package="rviz2",
-        executable="rviz2",
-        name="rviz2",
-        arguments=["-d", os.path.join(arduinobot_description_dir, "rviz", "display.rviz")],
-        output="screen"
-    )
-
     return LaunchDescription([
         model_arg,
         gazebo_resource_path,
         robot_state_publisher,
         gazebo,
         gz_spawn_entity,
-        gz_ros2_bridge,
-        rviz_node
+        gz_ros2_bridge
     ])
