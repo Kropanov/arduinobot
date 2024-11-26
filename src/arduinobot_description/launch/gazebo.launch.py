@@ -27,8 +27,6 @@ def generate_launch_description():
 
     ros_distro = os.environ["ROS_DISTRO"]
     physics_engine = "" if ros_distro == "humble" else "--physics-engine gz-physics-bullet-featherstone-plugin"
-    
-
     robot_description = ParameterValue(Command(["xacro ", LaunchConfiguration("model")]))
 
     robot_state_publisher = Node(
@@ -64,11 +62,20 @@ def generate_launch_description():
         ]
     )
 
+    rviz_node = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        arguments=["-d", os.path.join(arduinobot_description_dir, "rviz", "display.rviz")],
+        output="screen"
+    )
+
     return LaunchDescription([
         model_arg,
         gazebo_resource_path,
         robot_state_publisher,
         gazebo,
         gz_spawn_entity,
-        gz_ros2_bridge
+        gz_ros2_bridge,
+        rviz_node
     ])
