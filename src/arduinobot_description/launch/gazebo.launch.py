@@ -112,8 +112,8 @@ def generate_launch_description():
         model_arg,
         gazebo_resource_path,
         robot_state_publisher,
-        gz_spawn_entity,
         gazebo,
+        gz_spawn_entity,
         gz_ros2_bridge,
         start_gazebo_ros_bridge_cmd,
         start_gazebo_ros_image_bridge_cmd
