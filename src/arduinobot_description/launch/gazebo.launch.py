@@ -15,6 +15,12 @@ def generate_launch_description():
     gz_model_path = PathJoinSubstitution([arduinobot_description_dir])
     gz_launch_path = PathJoinSubstitution([pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py'])
 
+    world_arg = DeclareLaunchArgument(
+        name="world",
+        default_value="my_world.sdf",
+        description="World to load into Gazebo"
+    )
+
     model_arg = DeclareLaunchArgument(
         name="model", 
         default_value=os.path.join(arduinobot_description_dir, "urdf", "arduinobot.urdf.xacro"),
@@ -32,24 +38,25 @@ def generate_launch_description():
 
     gazebo_resource_path = SetEnvironmentVariable(
         name="GZ_SIM_RESOURCE_PATH",
-        value=[
-            str(Path(arduinobot_description_dir).parent.resolve())
-        ]
+        value=[str(Path(arduinobot_description_dir).parent.resolve())]
     )
 
     ros_distro = os.environ["ROS_DISTRO"]
     physics_engine = "" if ros_distro == "humble" else "--physics-engine gz-physics-bullet-featherstone-plugin"
 
     gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(
-                get_package_share_directory("ros_gz_sim"),
-                "launch"
-            ), "/gz_sim.launch.py"]
-        ),
-        launch_arguments=[
-            ("gz_args", [" -v 4 -r empty.sdf ", physics_engine])
-        ]
+        PythonLaunchDescriptionSource([gz_launch_path]),
+        launch_arguments={
+            'gz_args': [
+                "-v 4 -r ",
+                PathJoinSubstitution([
+                    arduinobot_description_dir,
+                    'worlds',
+                    LaunchConfiguration('world')
+                ]),
+                f" {physics_engine}"
+            ]
+        }.items()
     )
 
     gz_spawn_entity = Node(
@@ -92,23 +99,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        DeclareLaunchArgument(
-            'world',
-            default_value='my_world',
-            description='World to load into Gazebo'
-        ),
-        SetLaunchConfiguration(name='world_file', 
-                               value=[LaunchConfiguration('world'), 
-                                      TextSubstitution(text='.sdf')]),
-        SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', gz_model_path),
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(gz_launch_path),
-            launch_arguments={
-                'gz_args': [PathJoinSubstitution([arduinobot_description_dir, 'worlds',
-                                                  LaunchConfiguration('world_file')])],
-                'on_exit_shutdown': 'True'
-            }.items(),
-        ),
+        world_arg,
         model_arg,
         gazebo_resource_path,
         robot_state_publisher,
