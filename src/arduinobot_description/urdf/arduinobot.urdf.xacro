@@ -41,7 +41,7 @@
             </geometry>
         </visual>
         <collision>
-            <origin rpy="-1.1 0 0"  xyz="-0.15 0.34 0.28" />
+            <origin rpy="-${PI/2} 0 -${PI/2}" xyz="-0.1 0.125 0.15"/>
             <geometry>
                 <mesh filename="package://arduinobot_description/meshes/pi_camera.STL" scale="0.01 0.01 0.01" />
             </geometry>
