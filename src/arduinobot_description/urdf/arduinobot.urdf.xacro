@@ -2,7 +2,12 @@
 
 <!-- to run rviz - ros2 launch urdf_tutorial display.launch.py model:=/home/maksim/Templates/new_arm_ws/src/arduinobot_description/urdf/arduinobot.urdf.xacro  -->
 <robot xmlns:xacro="https://www.ros.org/wiki/xacro" name="arduinobot">
+
+    <xacro:arg name="is_ignition" default="true" />
     
+    <xacro:include filename="$(find arduinobot_description)/urdf/arduinobot_gazebo.xacro" />
+    <xacro:include filename="$(find arduinobot_description)/urdf/arduinobot_ros2_control.xacro" />
+
     <xacro:property name="PI" value="3.14159" />
     <xacro:property name="effort" value="30.0" />
     <xacro:property name="velocity" value="10.0" />
