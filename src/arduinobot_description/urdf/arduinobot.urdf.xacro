@@ -3,7 +3,6 @@
 <!-- to run rviz - ros2 launch urdf_tutorial display.launch.py model:=/home/maksim/Templates/new_arm_ws/src/arduinobot_description/urdf/arduinobot.urdf.xacro  -->
 <robot xmlns:xacro="https://www.ros.org/wiki/xacro" name="arduinobot">
     
-    <!-- Variables -->
     <xacro:property name="PI" value="3.14159" />
     <xacro:property name="effort" value="30.0" />
     <xacro:property name="velocity" value="10.0" />
@@ -47,39 +46,6 @@
                 <mesh filename="package://arduinobot_description/meshes/pi_camera.STL" scale="0.01 0.01 0.01" />
             </geometry>
         </collision>
-<!-- 
-        <sensor type="camera" name="rgb_camera_link">
-            <always_on>true</always_on>
-            <update_rate>30.0</update_rate>
-            <visualize>true</visualize>
-            <pose>0 0 0 0 0 0</pose>
-            <camera name="rgb_camera">
-                <horizontal_fov>1.21126</horizontal_fov>
-                <image>
-                    <width>2304</width>
-                    <height>1296</height>
-                    <format>R8G8B8</format>
-                </image>
-                <distortion>
-                    <k1>0.0</k1>
-                    <k2>0.0</k2>
-                    <k3>0.0</k3>
-                    <p1>0.0</p1>
-                    <p2>0.0</p2>
-                    <center>0.5 0.5</center>
-                </distortion>
-            </camera>
-
-            <plugin name="gazebo_ros_camera" filename="libgazebo_ros_camera.so">
-                <ros>
-                    <namespace>rgb_camera</namespace>
-                    <remapping>image_raw:=image_raw</remapping>
-                    <remapping>camera_info:=camera_info</remapping>
-                </ros>
-                <camera_name>rgb_camera</camera_name>
-                <frame_name>rgb_camera</frame_name>
-            </plugin>
-        </sensor> -->
     </link>
 
     <link name="base_plate">
