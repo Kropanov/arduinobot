@@ -26,8 +26,16 @@ def generate_launch_description():
         default_value=os.path.join(arduinobot_description_dir, "urdf", "arduinobot.urdf.xacro"),
         description="Absolute path to the robot URDF file"
     )
+    
+    ros_distro = os.environ["ROS_DISTRO"]
+    is_ignition = "True" if ros_distro == "humble" else "False"
 
-    robot_description = ParameterValue(Command(["xacro ", LaunchConfiguration("model")]))
+    robot_description = ParameterValue(Command([
+        "xacro ", 
+        LaunchConfiguration("model"),
+        " is_ignition:=", 
+        is_ignition
+    ]))
 
     robot_state_publisher = Node(
         package="robot_state_publisher",
@@ -41,7 +49,6 @@ def generate_launch_description():
         value=[str(Path(arduinobot_description_dir).parent.resolve())]
     )
 
-    ros_distro = os.environ["ROS_DISTRO"]
     physics_engine = "" if ros_distro == "humble" else "--physics-engine gz-physics-bullet-featherstone-plugin"
 
     gazebo = IncludeLaunchDescription(
